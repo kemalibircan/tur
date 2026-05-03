@@ -688,7 +688,7 @@ function PageIntro({ title, text }) {
 }
 
 function WhatsAppButton() {
-  return <a href="https://wa.me/902120000000" className="fixed bottom-24 right-5 z-40 grid h-14 w-14 place-items-center rounded-full bg-green-600 text-white shadow-soft transition hover:scale-105 rtl:left-5 rtl:right-auto" aria-label="WhatsApp"><MessageCircle size={26} /></a>;
+  return <a href="https://wa.me/902120000000" className="fixed bottom-5 right-5 z-40 grid h-14 w-14 place-items-center rounded-full bg-green-600 text-white shadow-soft transition hover:scale-105 rtl:left-5 rtl:right-auto" aria-label="WhatsApp"><MessageCircle size={26} /></a>;
 }
 
 function AIChatbot({ content, navigate }) {
@@ -713,7 +713,9 @@ function AIChatbot({ content, navigate }) {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="fixed bottom-5 right-5 z-40 grid h-16 w-16 place-items-center rounded-full bg-gradient-to-r from-brand-500 to-indigo-600 text-white shadow-soft transition hover:scale-105 rtl:left-5 rtl:right-auto"
+        className={`fixed bottom-24 right-5 z-40 grid h-16 w-16 origin-center place-items-center rounded-full bg-gradient-to-r from-brand-500 to-indigo-600 text-white shadow-soft transition-all duration-300 rtl:left-5 rtl:right-auto ${
+          open ? "scale-50 opacity-0 pointer-events-none" : "scale-100 opacity-100 hover:scale-105"
+        }`}
         aria-label="AI Chatbot"
       >
         <Bot size={28} />
@@ -723,85 +725,80 @@ function AIChatbot({ content, navigate }) {
         </span>
       </button>
 
-      {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 p-4 backdrop-blur-sm sm:p-6" role="dialog" aria-modal="true">
-          <div className="flex h-full w-full max-w-4xl flex-col overflow-hidden rounded-3xl bg-white/95 shadow-2xl backdrop-blur">
-            <div className="flex items-center justify-between border-b border-slate-200 bg-gradient-to-r from-brand-50 to-indigo-50 px-6 py-4">
-              <div className="flex items-center gap-3">
-                <div className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-brand-500 to-indigo-600 text-white shadow-sm">
-                  <Bot size={24} />
-                </div>
-                <div>
-                  <h2 className="text-lg font-extrabold text-ink">{d.aiChatbot.title}</h2>
-                  <p className="text-sm font-semibold text-brand-600 flex items-center gap-1">
-                    <Sparkles size={14} /> {d.aiChatbot.status}
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => { setOpen(false); navigate("/ai-chatbot"); }}
-                  className="hidden sm:inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-bold text-brand-700 shadow-sm ring-1 ring-slate-200 transition hover:bg-brand-50"
-                >
-                  {d.aiChatbot.whyUse}
-                </button>
-                <button
-                  type="button"
-                  aria-label="Close chat"
-                  onClick={() => setOpen(false)}
-                  className="grid h-10 w-10 place-items-center rounded-full bg-white text-slate-500 shadow-sm ring-1 ring-slate-200 hover:text-ink"
-                >
-                  <X size={20} />
-                </button>
-              </div>
+      <div 
+        className={`fixed bottom-24 right-5 z-50 flex flex-col overflow-hidden rounded-3xl bg-white/95 backdrop-blur shadow-2xl ring-1 ring-black/5 transition-all duration-300 origin-bottom-right rtl:left-5 rtl:right-auto ${
+          open ? "scale-100 opacity-100 pointer-events-auto h-[500px] max-h-[80vh] w-[calc(100vw-40px)] sm:w-[380px]" : "scale-50 opacity-0 pointer-events-none h-[500px] w-[calc(100vw-40px)] sm:w-[380px]"
+        }`}
+        role="dialog" 
+        aria-modal="true"
+      >
+        <div className="flex items-center justify-between border-b border-slate-200 bg-gradient-to-r from-brand-50 to-indigo-50 px-5 py-4">
+          <div className="flex items-center gap-3">
+            <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-brand-500 to-indigo-600 text-white shadow-sm">
+              <Bot size={20} />
             </div>
-            
-            <div className="flex-1 overflow-y-auto p-6">
-              <div className="grid gap-6">
-                {messages.map((msg, i) => (
-                  <div key={i} className={`flex ${msg.role === "ai" ? "justify-start" : "justify-end"}`}>
-                    <div className={`max-w-[85%] rounded-3xl px-5 py-4 sm:max-w-[75%] ${
-                      msg.role === "ai" 
-                        ? "bg-slate-100 text-slate-800 rounded-tl-sm" 
-                        : "bg-brand-500 text-white rounded-tr-sm shadow-sm"
-                    }`}>
-                      <p className="leading-relaxed">{msg.text}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="border-t border-slate-200 bg-white p-4 sm:p-6">
-              <form onSubmit={handleSend} className="flex gap-3">
-                <input
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder={d.aiChatbot.placeholder}
-                  className="flex-1 rounded-full border border-slate-200 bg-slate-50 px-6 py-4 text-ink outline-none transition focus:border-brand-500 focus:bg-white focus:ring-1 focus:ring-brand-500"
-                />
-                <button
-                  type="submit"
-                  disabled={!input.trim()}
-                  className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-brand-500 text-white shadow-sm transition hover:bg-brand-600 disabled:opacity-50"
-                >
-                  <Send size={20} className="ml-1" />
-                </button>
-              </form>
-              <div className="mt-4 text-center sm:hidden">
-                 <button
-                  type="button"
-                  onClick={() => { setOpen(false); navigate("/ai-chatbot"); }}
-                  className="text-sm font-bold text-brand-600"
-                >
-                  {d.aiChatbot.whyUse}
-                </button>
-              </div>
+            <div>
+              <h2 className="text-base font-extrabold text-ink">{d.aiChatbot.title}</h2>
+              <p className="text-xs font-semibold text-brand-600 flex items-center gap-1">
+                <Sparkles size={12} /> {d.aiChatbot.status}
+              </p>
             </div>
           </div>
+          <div className="flex items-center gap-1">
+            <button
+              type="button"
+              aria-label="Close chat"
+              onClick={() => setOpen(false)}
+              className="grid h-8 w-8 place-items-center rounded-full text-slate-500 transition hover:bg-white hover:text-ink hover:shadow-sm"
+            >
+              <X size={18} />
+            </button>
+          </div>
         </div>
-      )}
+        
+        <div className="flex-1 overflow-y-auto p-4 sm:p-5">
+          <div className="grid gap-4">
+            {messages.map((msg, i) => (
+              <div key={i} className={`flex ${msg.role === "ai" ? "justify-start" : "justify-end"}`}>
+                <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm ${
+                  msg.role === "ai" 
+                    ? "bg-slate-100 text-slate-800 rounded-tl-sm" 
+                    : "bg-brand-500 text-white rounded-tr-sm shadow-sm"
+                }`}>
+                  <p className="leading-relaxed">{msg.text}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="border-t border-slate-200 bg-white p-4">
+          <form onSubmit={handleSend} className="flex gap-2">
+            <input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder={d.aiChatbot.placeholder}
+              className="flex-1 rounded-full border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-ink outline-none transition focus:border-brand-500 focus:bg-white focus:ring-1 focus:ring-brand-500"
+            />
+            <button
+              type="submit"
+              disabled={!input.trim()}
+              className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-brand-500 text-white shadow-sm transition hover:bg-brand-600 disabled:opacity-50"
+            >
+              <Send size={18} className="ml-0.5" />
+            </button>
+          </form>
+          <div className="mt-3 text-center">
+             <button
+              type="button"
+              onClick={() => { setOpen(false); navigate("/ai-chatbot"); }}
+              className="text-xs font-bold text-brand-600 hover:text-brand-700 transition"
+            >
+              {d.aiChatbot.whyUse}
+            </button>
+          </div>
+        </div>
+      </div>
     </>
   );
 }

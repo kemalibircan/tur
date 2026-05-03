@@ -98,7 +98,9 @@ function App() {
   return (
     <div className="min-h-screen bg-cloud text-ink">
       <Header content={content} path={path} navigate={navigate} lang={lang} setLang={setLang} />
-      {page}
+      <div key={path} className="animate-fade-in">
+        {page}
+      </div>
       <Footer content={content} navigate={navigate} />
       <WhatsAppButton />
     </div>

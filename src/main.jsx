@@ -17,16 +17,19 @@ import {
   Phone,
   Plane,
   Search,
+  Send,
   ShieldCheck,
+  Sparkles,
   Star,
   Users,
   X,
   Youtube,
+  Bot
 } from "lucide-react";
 import { dictionary, getContent, getTours } from "./mockData";
 import "./styles.css";
 
-const paths = ["/", "/turlar", "/hakkimizda", "/blog", "/sss", "/iletisim"];
+const paths = ["/", "/turlar", "/hakkimizda", "/blog", "/sss", "/iletisim", "/ai-chatbot"];
 const languages = [
   ["tr", "Türkçe"],
   ["en", "English"],
@@ -75,6 +78,7 @@ function App() {
       "/rezervasyon": `${d.reserve} | RotaNova Travel`,
       "/sss": `${d.nav[4]} | RotaNova Travel`,
       "/blog-detay": `${content.blogPosts[0].title} | RotaNova Travel`,
+      "/ai-chatbot": `${d.aiChatbot.whyUse} | RotaNova Travel`,
     };
     document.title = tour ? `${tour.title} | RotaNova Travel` : titles[path] || titles["/"];
     document
@@ -93,6 +97,7 @@ function App() {
     path === "/iletisim" ? <ContactPage content={content} /> :
     path === "/rezervasyon" ? <ReservationPage content={content} /> :
     path === "/sss" ? <FAQPage content={content} /> :
+    path === "/ai-chatbot" ? <AIChatbotPage content={content} navigate={navigate} /> :
     <HomePage content={content} navigate={navigate} />;
 
   return (
@@ -103,6 +108,7 @@ function App() {
       </div>
       <Footer content={content} navigate={navigate} />
       <WhatsAppButton />
+      <AIChatbot content={content} navigate={navigate} />
     </div>
   );
 }
@@ -682,7 +688,161 @@ function PageIntro({ title, text }) {
 }
 
 function WhatsAppButton() {
-  return <a href="https://wa.me/902120000000" className="fixed bottom-5 right-5 z-40 grid h-14 w-14 place-items-center rounded-full bg-green-600 text-white shadow-soft transition hover:scale-105 rtl:left-5 rtl:right-auto" aria-label="WhatsApp"><MessageCircle size={26} /></a>;
+  return <a href="https://wa.me/902120000000" className="fixed bottom-24 right-5 z-40 grid h-14 w-14 place-items-center rounded-full bg-green-600 text-white shadow-soft transition hover:scale-105 rtl:left-5 rtl:right-auto" aria-label="WhatsApp"><MessageCircle size={26} /></a>;
+}
+
+function AIChatbot({ content, navigate }) {
+  const { d } = content;
+  const [open, setOpen] = useState(false);
+  const [messages, setMessages] = useState([
+    { role: "ai", text: d.aiChatbot.welcome }
+  ]);
+  const [input, setInput] = useState("");
+
+  const handleSend = (e) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+    setMessages(prev => [...prev, { role: "user", text: input }]);
+    setInput("");
+    setTimeout(() => {
+      setMessages(prev => [...prev, { role: "ai", text: d.aiChatbot.reply }]);
+    }, 1000);
+  };
+
+  return (
+    <>
+      <button
+        onClick={() => setOpen(true)}
+        className="fixed bottom-5 right-5 z-40 grid h-16 w-16 place-items-center rounded-full bg-gradient-to-r from-brand-500 to-indigo-600 text-white shadow-soft transition hover:scale-105 rtl:left-5 rtl:right-auto"
+        aria-label="AI Chatbot"
+      >
+        <Bot size={28} />
+        <span className="absolute -top-1 -right-1 flex h-4 w-4">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-400 opacity-75"></span>
+          <span className="relative inline-flex h-4 w-4 rounded-full bg-indigo-500"></span>
+        </span>
+      </button>
+
+      {open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 p-4 backdrop-blur-sm sm:p-6" role="dialog" aria-modal="true">
+          <div className="flex h-full w-full max-w-4xl flex-col overflow-hidden rounded-3xl bg-white/95 shadow-2xl backdrop-blur">
+            <div className="flex items-center justify-between border-b border-slate-200 bg-gradient-to-r from-brand-50 to-indigo-50 px-6 py-4">
+              <div className="flex items-center gap-3">
+                <div className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-brand-500 to-indigo-600 text-white shadow-sm">
+                  <Bot size={24} />
+                </div>
+                <div>
+                  <h2 className="text-lg font-extrabold text-ink">{d.aiChatbot.title}</h2>
+                  <p className="text-sm font-semibold text-brand-600 flex items-center gap-1">
+                    <Sparkles size={14} /> {d.aiChatbot.status}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => { setOpen(false); navigate("/ai-chatbot"); }}
+                  className="hidden sm:inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-bold text-brand-700 shadow-sm ring-1 ring-slate-200 transition hover:bg-brand-50"
+                >
+                  {d.aiChatbot.whyUse}
+                </button>
+                <button
+                  type="button"
+                  aria-label="Close chat"
+                  onClick={() => setOpen(false)}
+                  className="grid h-10 w-10 place-items-center rounded-full bg-white text-slate-500 shadow-sm ring-1 ring-slate-200 hover:text-ink"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+            </div>
+            
+            <div className="flex-1 overflow-y-auto p-6">
+              <div className="grid gap-6">
+                {messages.map((msg, i) => (
+                  <div key={i} className={`flex ${msg.role === "ai" ? "justify-start" : "justify-end"}`}>
+                    <div className={`max-w-[85%] rounded-3xl px-5 py-4 sm:max-w-[75%] ${
+                      msg.role === "ai" 
+                        ? "bg-slate-100 text-slate-800 rounded-tl-sm" 
+                        : "bg-brand-500 text-white rounded-tr-sm shadow-sm"
+                    }`}>
+                      <p className="leading-relaxed">{msg.text}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="border-t border-slate-200 bg-white p-4 sm:p-6">
+              <form onSubmit={handleSend} className="flex gap-3">
+                <input
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder={d.aiChatbot.placeholder}
+                  className="flex-1 rounded-full border border-slate-200 bg-slate-50 px-6 py-4 text-ink outline-none transition focus:border-brand-500 focus:bg-white focus:ring-1 focus:ring-brand-500"
+                />
+                <button
+                  type="submit"
+                  disabled={!input.trim()}
+                  className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-brand-500 text-white shadow-sm transition hover:bg-brand-600 disabled:opacity-50"
+                >
+                  <Send size={20} className="ml-1" />
+                </button>
+              </form>
+              <div className="mt-4 text-center sm:hidden">
+                 <button
+                  type="button"
+                  onClick={() => { setOpen(false); navigate("/ai-chatbot"); }}
+                  className="text-sm font-bold text-brand-600"
+                >
+                  {d.aiChatbot.whyUse}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+function AIChatbotPage({ content, navigate }) {
+  const { d } = content;
+  return (
+    <main className="section">
+      <PageIntro title={d.aiChatbot.whyUse} text={d.aiChatbot.pageText} />
+      <div className="grid gap-8 lg:grid-cols-2">
+        <div className="grid content-center gap-6">
+          <DetailBlock title={d.aiChatbot.features[0].title}>{d.aiChatbot.features[0].text}</DetailBlock>
+          <DetailBlock title={d.aiChatbot.features[1].title}>{d.aiChatbot.features[1].text}</DetailBlock>
+          <DetailBlock title={d.aiChatbot.features[2].title}>{d.aiChatbot.features[2].text}</DetailBlock>
+        </div>
+        <div className="relative flex min-h-[400px] items-center justify-center rounded-3xl bg-gradient-to-br from-brand-100 to-indigo-100 p-8 shadow-inner overflow-hidden">
+          <div className="relative z-10 w-full max-w-sm overflow-hidden rounded-3xl bg-white shadow-2xl ring-1 ring-black/5">
+             <div className="bg-gradient-to-r from-brand-500 to-indigo-600 p-4 text-white flex items-center gap-3">
+                <Bot size={24} />
+                <span className="font-extrabold">{d.aiChatbot.title}</span>
+             </div>
+             <div className="p-5 grid gap-4 bg-slate-50">
+                <div className="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm text-sm text-slate-700 w-5/6">
+                  {d.aiChatbot.welcome}
+                </div>
+                <div className="bg-brand-500 p-3 rounded-2xl rounded-tr-none shadow-sm text-sm text-white w-3/4 ml-auto">
+                  {document.documentElement.lang === 'tr' ? 'Kapadokya turu hakkında bilgi alabilir miyim?' : document.documentElement.lang === 'en' ? 'Can I get information about the Cappadocia tour?' : 'هل يمكنني الحصول على معلومات حول جولة كابادوكيا؟'}
+                </div>
+                <div className="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm text-sm text-slate-700 w-5/6">
+                  {d.aiChatbot.reply}
+                </div>
+             </div>
+          </div>
+          <div className="absolute top-1/2 left-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-400/20 blur-3xl"></div>
+        </div>
+      </div>
+      <div className="mt-14 text-center">
+         <LinkButton to="/rezervasyon" navigate={navigate} className="bg-indigo-600 text-white hover:bg-indigo-700">{d.aiChatbot.tryNow}</LinkButton>
+      </div>
+    </main>
+  );
 }
 
 createRoot(document.getElementById("root")).render(<App />);

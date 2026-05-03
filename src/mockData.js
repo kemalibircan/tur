@@ -47,7 +47,7 @@ export const dictionary = {
   tr: {
     langLabel: "TR",
     dir: "ltr",
-    nav: ["Ana Sayfa", "Turlar", "Hakkımızda", "Blog", "SSS", "İletişim"],
+    nav: ["Ana Sayfa", "Turlar", "Hakkımızda", "Blog", "SSS", "İletişim", "AI Chatbot"],
     reserve: "Rezervasyon Talebi",
     discoverTours: "Turları Keşfet",
     details: "Detayları Gör",
@@ -122,11 +122,26 @@ export const dictionary = {
       requiredDate: "Tarih seçin.",
       requiredKvkk: "KVKK onayı gerekli.",
     },
+    aiChatbot: {
+      title: "RotaNova AI Asistan",
+      status: "Çevrimiçi",
+      welcome: "Merhaba! RotaNova Travel'a hoş geldiniz. Size turlarımız, rezervasyon süreçleri veya seyahat rehberliği konularında nasıl yardımcı olabilirim?",
+      reply: "Harika bir soru! Kapadokya turlarımız yıl boyunca devam ediyor. Fiyat, tarih ve rota detayları için Turlar sayfamızı ziyaret edebilirsiniz. Başka bir konuda yardımcı olmamı ister misiniz?",
+      placeholder: "Bir mesaj yazın...",
+      whyUse: "Neden AI Chatbot?",
+      pageText: "Seyahat planlamanızı hızlandırmak ve 7/24 kesintisiz destek sunmak için yapay zeka asistanımızla tanışın. Size en uygun rotayı saniyeler içinde bulalım.",
+      features: [
+        { title: "7/24 Kesintisiz Destek", text: "Mesai saatleri dışında bile turlar, vizeler ve fiyatlar hakkında anında bilgi alın." },
+        { title: "Kişiselleştirilmiş Öneriler", text: "Beklentilerinize, bütçenize ve tercihlerinize en uygun tatil rotasını saniyeler içinde analiz edip size sunar." },
+        { title: "Hızlı Rezervasyon Adımları", text: "Karmaşık formlarla uğraşmadan, yapay zeka yönlendirmeleriyle rezervasyon sürecinizi hızlandırın." }
+      ],
+      tryNow: "Hemen Rezervasyon Yap"
+    },
   },
   en: {
     langLabel: "EN",
     dir: "ltr",
-    nav: ["Home", "Tours", "About", "Blog", "FAQ", "Contact"],
+    nav: ["Home", "Tours", "About", "Blog", "FAQ", "Contact", "AI Chatbot"],
     reserve: "Reservation Request",
     discoverTours: "Explore Tours",
     details: "View Details",
@@ -201,11 +216,26 @@ export const dictionary = {
       requiredDate: "Select a date.",
       requiredKvkk: "Consent is required.",
     },
+    aiChatbot: {
+      title: "RotaNova AI Assistant",
+      status: "Online",
+      welcome: "Hello! Welcome to RotaNova Travel. How can I help you with our tours, reservation processes, or travel guidance?",
+      reply: "Great question! Our tours run throughout the year. You can visit our Tours page for pricing, dates, and route details. Would you like help with anything else?",
+      placeholder: "Type a message...",
+      whyUse: "Why AI Chatbot?",
+      pageText: "Meet our artificial intelligence assistant to speed up your travel planning and provide 24/7 uninterrupted support. Let's find the best route for you in seconds.",
+      features: [
+        { title: "24/7 Uninterrupted Support", text: "Get instant information about tours, visas, and prices even outside of working hours." },
+        { title: "Personalized Recommendations", text: "It analyzes and presents the most suitable holiday route for your expectations, budget, and preferences in seconds." },
+        { title: "Fast Booking Steps", text: "Speed up your booking process with AI guidance without dealing with complex forms." }
+      ],
+      tryNow: "Book Now"
+    },
   },
   ar: {
     langLabel: "AR",
     dir: "rtl",
-    nav: ["الرئيسية", "الجولات", "من نحن", "المدونة", "الأسئلة", "اتصل بنا"],
+    nav: ["الرئيسية", "الجولات", "من نحن", "المدونة", "الأسئلة", "اتصل بنا", "المساعد الذكي"],
     reserve: "طلب حجز",
     discoverTours: "استكشف الجولات",
     details: "عرض التفاصيل",
@@ -279,6 +309,21 @@ export const dictionary = {
       requiredGuests: "أدخل عدد الأشخاص.",
       requiredDate: "اختر التاريخ.",
       requiredKvkk: "الموافقة مطلوبة.",
+    },
+    aiChatbot: {
+      title: "مساعد روتا نوفا الذكي",
+      status: "متصل",
+      welcome: "مرحباً! مرحباً بك في روتا نوفا للسياحة. كيف يمكنني مساعدتك في جولاتنا أو عمليات الحجز أو إرشادات السفر؟",
+      reply: "سؤال رائع! جولاتنا مستمرة طوال العام. يمكنك زيارة صفحة الجولات للحصول على تفاصيل الأسعار والتواريخ والمسارات. هل تريد مساعدة في شيء آخر؟",
+      placeholder: "اكتب رسالة...",
+      whyUse: "لماذا المساعد الذكي؟",
+      pageText: "تعرف على مساعدنا الذكي لتسريع تخطيط سفرك وتوفير دعم مستمر على مدار الساعة. لنجد لك أفضل مسار في ثوانٍ.",
+      features: [
+        { title: "دعم مستمر 24/7", text: "احصل على معلومات فورية حول الجولات والتأشيرات والأسعار حتى خارج ساعات العمل." },
+        { title: "توصيات مخصصة", text: "يحلل ويقدم أفضل مسار عطلة يتناسب مع توقعاتك وميزانيتك وتفضيلاتك في ثوانٍ." },
+        { title: "خطوات حجز سريعة", text: "سَرِّع عملية الحجز بتوجيهات الذكاء الاصطناعي دون التعامل مع نماذج معقدة." }
+      ],
+      tryNow: "احجز الآن"
     },
   },
 };
